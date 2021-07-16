@@ -1,4 +1,6 @@
 import random
+
+
 number = random.randint(1, 6)
 x = "yes"
 while x == "yes":
