@@ -1,3 +1,6 @@
+from random import randrange
+
+
 board = [' ' for x in range(10)]
 
 
@@ -31,20 +34,21 @@ def isBoardFull(board):
 
 
 def isWinner(b, lp):
-    return (b[1] == lp and b[2] == lp and b[3] == lp) or\
-        (b[4] == lp and b[5] == lp and b[6] == lp) or\
-        (b[7] == lp and b[8] == lp and b[9] == lp) or\
-        (b[1] == lp and b[4] == lp and b[7] == lp) or\
-        (b[2] == lp and b[5] == lp and b[8] == lp) or\
-        (b[3] == lp and b[6] == lp and b[9] == lp) or\
-        (b[1] == lp and b[5] == lp and b[9] == lp) or\
-        (b[1] == lp and b[5] == lp and b[7] == lp)
+    return ((b[1] == lp and b[2] == lp and b[3] == lp) or
+            (b[4] == lp and b[5] == lp and b[6] == lp) or
+            (b[7] == lp and b[8] == lp and b[9] == lp) or
+            (b[1] == lp and b[4] == lp and b[7] == lp) or
+            (b[2] == lp and b[5] == lp and b[8] == lp) or
+            (b[3] == lp and b[6] == lp and b[9] == lp) or
+            (b[1] == lp and b[5] == lp and b[9] == lp) or
+            (b[3] == lp and b[5] == lp and b[7] == lp))
 
 
 def playerMove():
     run = True
     while run:
-        move = input("please select a position to enter the X between 1 to 9")
+        move = input(
+            "Please select a position to enter the X between 1 to 9: ")
         try:
             move = int(move)
             if move > 0 and move < 10:
@@ -54,6 +58,86 @@ def playerMove():
                 else:
                     print('Sorry, this space is occupied')
             else:
-                print('please type a number between 1 and 9')
+                print('Please type a number between 1 and 9')
         except Exception:
             print('Please type a number')
+
+
+def computerMove():
+    possibleMoves = [
+        x for x, letter in enumerate(board) if letter == ' ' and x != 0]
+    move = 0
+
+    for let in ['O', 'X']:
+        for i in possibleMoves:
+            boardcopy = board[:]
+            boardcopy[i] = let
+            if isWinner(boardcopy, let):
+                move = i
+                return move
+
+    cornersOpen = []
+    for i in possibleMoves:
+        if i in [1, 3, 7, 9]:
+            cornersOpen.append(i)
+
+    if len(cornersOpen) > 0:
+        move = selectRandom(cornersOpen)
+        return move
+
+    if 5 in possibleMoves:
+        move = 5
+        return move
+
+    edgesOpen = []
+    for i in possibleMoves:
+        if i in [2, 4, 6, 8]:
+            edgesOpen.append(i)
+
+    if len(edgesOpen) > 0:
+        selectRandom(edgesOpen)
+        return move
+
+
+def selectRandom(li):
+    ln = len(li)
+    r = randrange(0, ln)
+    return li[r]
+
+
+def main():
+    print("Welcome to the game")
+    printBoard(board)
+
+    while not(isBoardFull(board)):
+        if not(isWinner(board, 'O')):
+            playerMove()
+            printBoard(board)
+        else:
+            print("Sorry you loose!")
+            break
+
+        if not(isWinner(board, 'X')):
+            move = computerMove()
+            if move == 0:
+                print(" ")
+            else:
+                insertLetter('O', move)
+                print('Computer placed an o on position', move, ':')
+                printBoard(board)
+        else:
+            print("You win!")
+            break
+
+    if isBoardFull(board):
+        print("Tie game")
+
+
+while True:
+    x = input("Do you want to play? (y/n): ")
+    if x.lower() == 'y':
+        board = [' ' for x in range(10)]
+        print('-----------------------------')
+        main()
+    else:
+        break
