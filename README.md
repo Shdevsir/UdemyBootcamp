@@ -4,3 +4,4 @@
 * project_2 - dictionary
 * project_3 - hangman game
 * project_4 - tic tac toe
+* project_5 - plotter
