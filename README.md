@@ -6,3 +6,5 @@
 * project_4 - tic tac toe
 * project_5 - plotter
 * project_6 - geographical plot
+* project_7 - school donation analysis
+* project_8 - turtle graphics
