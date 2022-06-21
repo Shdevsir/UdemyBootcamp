@@ -8,3 +8,5 @@
 * project_6 - geographical plot
 * project_7 - school donation analysis
 * project_8 - turtle graphics
+* project_9 - matchmaker
+* project_10 - screen pet
