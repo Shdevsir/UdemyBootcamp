@@ -1,117 +1,98 @@
-from tkinter import Tk, HIDDEN, NORMAL, Canvas
+from tkinter import Button, Tk, Label, StringVar, Listbox, Entry, END
 
 
-def toggle_eyes():
-    current_color = c.itemcget(eye_left, 'fill')
-    new_color = c.body_color if current_color == 'white' else 'white'
-    current_state = c.itemcget(pupil_left, 'state')
-    new_state = NORMAL if current_state == HIDDEN else HIDDEN
-    c.itemconfigure(pupil_left, state =new_state)
-    c.itemconfigure(pupil_right, state =new_state)
-    c.itemconfigure(eye_left, fill =new_color)
-    c.itemconfigure(eye_right, fill =new_color)
+def add(a, b):
+    return a + b
 
 
-def blink():
-    toggle_eyes()
-    win.after(250, toggle_eyes)
-    win.after(3000, blink)
+def sub(a, b):
+    return a - b
 
 
-def toggle_pupils():
-    if not c.crossed_eyes:
-        c.move(pupil_left, 10, -5)
-        c.move(pupil_right, -10, -5)
-        c.crossed_eyes = True
-    else:
-        c.move(pupil_left, -10, 5)
-        c.move(pupil_right, 10, 5)
-        c.crossed_eyes = False
+def mul(a, b):
+    return a * b
 
 
-def toggle_tongue():
-    if not c.tongue_out:
-        c.itemconfigure(tongue_tip, state=NORMAL)
-        c.itemconfigure(tongue_main, state=NORMAL)
-        c.tongue_out = True
-    else:
-        c.itemconfigure(tongue_tip, state=HIDDEN)
-        c.itemconfigure(tongue_main, state=HIDDEN)
-        c.tongue_out = False
+def div(a, b):
+    return a / b
 
 
-def cheeky(event):
-    toggle_tongue()
-    toggle_pupils()
-    hide_happy(event)
-    win.after(1000, toggle_tongue)
-    win.after(1000, toggle_pupils)
-    return
+def mod(a, b):
+    a % b
 
 
-def show_happy(event):
-    if (20 <= event.x and event.x <= 350) and (20 <= event.y and event.y <= 350):
-        c.itemconfigure(cheek_left, state=NORMAL)
-        c.itemconfigure(cheek_right, state=NORMAL)
-        c.itemconfigure(mouth_happy, state=NORMAL)
-        c.itemconfigure(mouth_normal, state=HIDDEN)
-        c.itemconfigure(mouth_sad, state=HIDDEN)
-        c.happy_level = 10
-    return
+def lcm(a, b):
+    lcm = a if a > b else b
+    while lcm <= a * b:
+        if lcm % a == 0 and lcm % b == 0:
+            return lcm
+        lcm += 1
 
 
-def hide_happy(event):
-    c.itemconfigure(cheek_left, state=HIDDEN)
-    c.itemconfigure(cheek_right, state=HIDDEN)
-    c.itemconfigure(mouth_happy, state=HIDDEN)
-    c.itemconfigure(mouth_normal, state=NORMAL)
-    c.itemconfigure(mouth_sad, state=HIDDEN)
-    return
+def hcf(a, b):
+    hcf = a if a < b else b
+    while hcf >= 1:
+        if a % hcf == 0 and b % hcf == 0:
+            return hcf
+        hcf -= 1
 
 
-def sad():
-    if c.happy_level == 0:
-        c.itemconfigure(mouth_happy, state=HIDDEN)
-        c.itemconfigure(mouth_normal, state=HIDDEN)
-        c.itemconfigure(mouth_sad, state=NORMAL)
-    else:
-        c.happy_level -= 1
-    win.after(500, sad)
+def extract_from_text(text):
+    lis = []
+    for t in text.split(' '):
+        try:
+            lis.append(float(t))
+        except ValueError:
+            pass
+    return lis
+
+
+def calculate():
+    text = textin.get()
+    for word in text.split(' '):
+        if word.upper() in operations.keys():
+            try:
+                lis = extract_from_text(text)
+                r = operations[word.upper()](lis[0], lis[1])
+                my_list.delete(0, END)
+                my_list.insert(END, r)
+            except Exception:
+                my_list.delete(0, END)
+                my_list.insert(END, 'something went wrong please enter again')
+            finally:
+                break
+        elif word.upper() not in operations.keys():
+            my_list.delete(0, END)
+            my_list.insert(END, 'something went wrong please enter again')
+
+
+operations = {'ADD': add, 'ADDITION': add, 'SUM': add, 'PLUS': add,
+              'SUB': sub, 'DIFFERENCE': sub, 'MINUS': sub, 'SUBTRACT': sub,
+              'LCM': lcm, 'HCF': hcf, 'PRODUCT': mul, 'MULTIPLICATION': mul,
+              'MULTIPLY': mul, 'DIVISION': div, 'DIV': div, 'DIVIDE': div,
+              'MOD': mod, 'REMANDER': mod, 'MODULUS': mod}
 
 
 win = Tk()
+win.geometry('500x300')
+win.title('Smart Pugger')
+win.configure(bg='skyblue')
 
-c = Canvas(win, width=400, height=400)
-c.configure(bg='dark blue', highlightthickness=0)
-c.body_color = 'SkyBlue1'
+l1 = Label(win, text='I am a smart calculator', width=20)
+l1.place(x=150, y=10)
+l2 = Label(win, text='My name is pugger')
+l2.place(x=180, y=40)
+l3 = Label(win, text='How can i help you')
+l3.place(x=176, y=130)
 
-body = c.create_oval(35, 20, 365, 350, outline=c.body_color, fill=c.body_color)
-foot_left = c.create_oval(65, 320, 145, 360, outline=c.body_color, fill=c.body_color)
-foot_right = c.create_oval(250, 320, 330, 360, outline=c.body_color, fill=c.body_color)
-ear_left = c.create_polygon(75, 80, 75, 10, 165, 70, outline=c.body_color, fill=c.body_color)
-ear_right = c.create_polygon(250, 45, 325, 10, 320, 70, outline=c.body_color, fill=c.body_color)
-eye_left = c.create_oval(130, 110, 160, 170, outline='black', fill='white')
-eye_right = c.create_oval(230, 110, 260, 170, outline='black', fill='white')
-pupil_left = c.create_oval(140, 145, 150, 155, outline='black', fill='black')
-pupil_right = c.create_oval(240, 145, 250, 155, outline='black', fill='black')
-mouth_normal = c.create_line(170, 250, 200, 272, 230, 250, smooth=1, width=2, state=NORMAL)
-mouth_happy = c.create_line(170, 250, 200, 282, 230, 250, smooth=1, width=2, state=HIDDEN)
-mouth_sad = c.create_line(170, 250, 200, 232, 230, 250, smooth=1, width=2, state=HIDDEN)
-tongue_main = c.create_rectangle(170, 250, 230, 290, outline='red', fill='red', state=HIDDEN)
-tongue_tip = c.create_rectangle(170, 285, 230, 300, outline='red', fill='red', state=HIDDEN)
-cheek_left = c.create_oval(70, 180, 120, 230, outline='pink', fill='pink', state=HIDDEN)
-cheek_right = c.create_oval(280, 180, 330, 230, outline='pink', fill='pink', state=HIDDEN)
+textin = StringVar()
+e1 = Entry(win, width=30, textvariable=textin)
+e1.place(x=100, y=160)
 
+b1 = Button(win, text='Just This', command=calculate)
+b1.place(x=210, y=200)
 
-c.pack()
-c.bind('<Motion>', show_happy)
-c.bind('<Leave>', hide_happy)
-c.bind('<Double-1>', cheeky)
+my_list = Listbox(win, width=20, height=3)
+my_list.place(x=150, y=230)
 
-c.crossed_eyes = False
-c.tongue_out = False
-c.happy_level = 10
-
-win.after(1000, blink)
-win.after(5000, sad)
 win.mainloop()

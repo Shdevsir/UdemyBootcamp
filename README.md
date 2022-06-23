@@ -6,10 +6,9 @@
 * project_4 - tic tac toe
 * project_5 - plotter
 * project_6 - geographical plot
-* project_7 - school donation analysis
-* project_8 - turtle graphics
-* project_9 - matchmaker
-* project_10 - screen pet
-* project_11 - smart calculator
-* project_12 - database
-* project_13 - egg cather game
+* project_7 - turtle graphics
+* project_8 - matchmaker
+* project_9 - screen pet
+* project_10 - smart calculator
+* project_11 - database
+* project_12 - egg cather game
