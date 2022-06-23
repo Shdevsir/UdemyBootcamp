@@ -10,3 +10,6 @@
 * project_8 - turtle graphics
 * project_9 - matchmaker
 * project_10 - screen pet
+* project_11 - smart calculator
+* project_12 - database
+* project_13 - egg cather game
